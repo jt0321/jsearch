@@ -5,6 +5,8 @@ ingestion pipeline that collects job postings from public APIs (RemoteOK, Adzuna
 normalizes them, and pushes to Kafka for downstream processing.
 
 ## Structure
+![Workflow](./workflow.png)
+
 - src/collectors: API collectors for RemoteOK and Adzuna
 - src/utils: helper utilities (Kafka producer)
 - docker-compose.yml: local Kafka + Zookeeper
