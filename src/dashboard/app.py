@@ -1,7 +1,7 @@
 import sys
 import streamlit as st
 import pandas as pd
-import psycopg2
+
 import os
 import plotly.express as px # Keep plotly for potential future use or if other charts are added
 
@@ -10,14 +10,12 @@ st.title("JSearch Job Market Analytics")
 
 st.markdown("This dashboard visualizes real-time job market data ingested via Python APIs, processed by Apache Flink, and stored in PostgreSQL.")
 
+import sqlalchemy
+
 def get_connection():
-    return psycopg2.connect(
-        host="localhost",
-        port="5432",
-        database="jobs_db",
-        user="admin",
-        password="password"
-    )
+    host = os.environ.get("POSTGRES_HOST", "localhost")
+    engine = sqlalchemy.create_engine(f"postgresql+pg8000://admin:password@{host}:5432/jobs_db")
+    return engine.connect()
 
 @st.cache_data(ttl=5) # Refresh every 5 seconds
 def fetch_data():

@@ -20,7 +20,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  
+
   postgres:
     image: postgres:15
     container_name: postgres
@@ -34,7 +34,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   jobmanager:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.flink
     ports:
@@ -48,7 +48,7 @@ services:
       - ./src:/opt/flink/src
 
   taskmanager:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.flink
     depends_on:
@@ -61,6 +61,18 @@ services:
         taskmanager.numberOfTaskSlots: 2
     volumes:
       - ./src:/opt/flink/src
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      POSTGRES_HOST: postgres
+    depends_on:
+      - postgres
+
 volumes:
   zookeeper_data:
   kafka_data:
