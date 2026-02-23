@@ -24,6 +24,12 @@ def fetch_data():
         query = "SELECT * FROM jobs;"
         df = pd.read_sql(query, conn)
         conn.close()
+        
+        if 'date_posted' in df.columns and not df.empty:
+            df['date_posted_dt'] = pd.to_datetime(df['date_posted'], errors='coerce', utc=True)
+            df = df[df['date_posted_dt'].dt.year >= 2026].copy()
+            df = df.drop(columns=['date_posted_dt'])
+            
         return df
     except Exception as e:
         st.error(f"Failed to fetch data from PostgreSQL: {e}")
@@ -60,17 +66,22 @@ else:
         # If the skills array is stored as a string, attempt to parse/count it
         st.subheader("Top Skills Requested")
         if 'skills' in df.columns:
-            import ast
             try:
                 skill_list = []
                 for s in df['skills'].dropna():
-                    if isinstance(s, str) and s.startswith('['):
-                        parsed = ast.literal_eval(s)
-                        skill_list.extend(parsed)
+                    if isinstance(s, list):
+                        skill_list.extend(s)
+                    elif isinstance(s, str):
+                        cleaned = s.strip('[]{}').replace("'", "").replace('"', "")
+                        if cleaned:
+                            parsed = [tag.strip() for tag in cleaned.split(',') if tag.strip()]
+                            skill_list.extend(parsed)
                 
                 if skill_list:
-                    skill_counts = pd.Series(skill_list).value_counts().head(10)
-                    fig2 = px.bar(skill_counts.reset_index(), x='index', y='0', labels={'index': 'Skill', '0': 'Count'}, color='0', color_continuous_scale='Greens')
+                    skill_counts = pd.Series(skill_list).value_counts().reset_index()
+                    skill_counts.columns = ['Skill', 'Count']
+                    skill_counts = skill_counts.head(10)
+                    fig2 = px.bar(skill_counts, x='Skill', y='Count', color='Count', color_continuous_scale='Greens')
                     st.plotly_chart(fig2, use_container_width=True)
                 else:
                     st.info("No skills data to display.")

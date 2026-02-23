@@ -8,3 +8,5 @@ KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "jobs_raw")
 
 ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID")
 ADZUNA_APP_KEY = os.getenv("ADZUNA_APP_KEY")
+
+RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
