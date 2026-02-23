@@ -59,4 +59,4 @@ with DAG(
         bash_command='cd /opt/airflow && python -m src.main',
     )
 
-    init_db >> submit_flink_job >> run_collectors
+    init_db >> run_collectors >> submit_flink_job

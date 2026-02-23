@@ -32,6 +32,6 @@ This repository contains JSearch: a real-time data engineering pipeline that col
 3. Access the Airflow Web UI at `http://localhost:8080` (credentials: `airflow` / `airflow`).
 4. Enable the `jsearch_pipeline` DAG to automatically:
    - Initialize the `jobs` database table
-   - Submit the PyFlink processing job
    - Run the Python collectors to ingest data
+   - Submit the PyFlink processing job
 5. View the dashboard at `http://localhost:8501`.
