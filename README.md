@@ -1,6 +1,6 @@
 # JSearch - Real-Time Job Market Data Pipeline
 
-This repository contains JSearch: a real-time data engineering pipeline that collects job postings from public APIs (RemoteOK, Adzuna, Jobicy, JSearch via RapidAPI), normalizes them, and streams them for downstream analytics.
+This repository contains JSearch: a real-time data engineering pipeline that collects job postings from public APIs normalizes them, and streams them for downstream analytics.
 
 ## Architecture
 ![Workflow](./workflow.png)
