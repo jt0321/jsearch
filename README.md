@@ -24,19 +24,14 @@ This repository contains JSearch: a real-time data engineering pipeline that col
    ```bash
    cp .env.example .env
    ```
-2. Start the infrastructure:
+2. Start the infrastructure (Kafka, Postgres, Flink, and Airflow):
    ```bash
-   docker-compose up -d
+   docker-compose up -d --build
    ```
-3. Initialize the database schema:
-   ```bash
-   docker exec postgres psql -U admin -d jobs_db -c "CREATE TABLE IF NOT EXISTS jobs (title TEXT, company TEXT, location TEXT, remote BOOLEAN, skills TEXT[], salary TEXT, date_posted TEXT, source TEXT);"
-   ```
-4. Submit the PyFlink streaming job:
-   ```bash
-   docker exec jsearch-jobmanager-1 flink run -py src/processor/flink_processor.py
-   ```
-5. Run collectors to ingest data into Kafka:
-   ```bash
-   python -m src.main
-   ```
+   *Note: Airflow initialization may take a minute or two.*
+3. Access the Airflow Web UI at `http://localhost:8080` (credentials: `airflow` / `airflow`).
+4. Enable the `jsearch_pipeline` DAG to automatically:
+   - Initialize the `jobs` database table
+   - Submit the PyFlink processing job
+   - Run the Python collectors to ingest data
+5. View the dashboard at `http://localhost:8501`.

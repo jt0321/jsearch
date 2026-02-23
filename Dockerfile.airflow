@@ -1,0 +1,15 @@
+FROM apache/airflow:2.7.3-python3.10
+
+USER root
+# Install Docker CLI
+RUN apt-get update && apt-get install -y docker.io \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN usermod -aG docker airflow || true
+
+USER airflow
+RUN pip install --no-cache-dir \
+    apache-airflow-providers-postgres \
+    apache-airflow-providers-docker \
+    confluent-kafka==2.3.0 \
+    requests==2.31.0 \
+    psycopg2-binary
