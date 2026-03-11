@@ -17,12 +17,12 @@ This repository contains JSearch: a real-time data engineering pipeline that col
 - `src/dashboard`: Streamlit analytics application
 - `docker-compose.yml`: Infrastructure (Kafka, Zookeeper, Flink, Postgres)
 - `Dockerfile.flink`: Custom PyFlink image with Kafka and PostgreSQL JDBC connectors
-- `.env.example`: sample environment variables
+- `env.example`: sample environment variables
 
 ## Quickstart
 1. Clone the repository and configure API keys:
    ```bash
-   cp .env.example .env
+   cp env.example .env
    ```
 2. Start the infrastructure (Kafka, Postgres, Flink, and Airflow):
    ```bash
